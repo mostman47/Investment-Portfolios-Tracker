@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio Tracker</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #1a1a2e; padding: 16px; }
+  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+  h1 { font-size: 1.25rem; font-weight: 700; }
+  .subtitle { font-size: 0.75rem; color: #666; margin-top: 2px; }
+  .refresh-btn { background: #2563eb; color: white; border: none; border-radius: 8px; padding: 7px 14px; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+  .refresh-btn:disabled { background: #93c5fd; cursor: not-allowed; }
+  .spin { display: inline-block; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .status-bar { font-size: 0.73rem; color: #888; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #d1d5db; display: inline-block; }
+  .dot.live { background: #16a34a; }
+
+  .summaries { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .summary-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); border-top: 3px solid; }
+  .summary-card.p1 { border-top-color: #2563eb; }
+  .summary-card.p2 { border-top-color: #7c3aed; }
+  .summary-card.p3 { border-top-color: #0d9488; }
+  .card-label { font-size: 0.7rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .card-value { font-size: 1.6rem; font-weight: 800; color: #1a1a2e; }
+  .card-basis { font-size: 0.75rem; color: #9ca3af; margin-bottom: 10px; }
+  .pills { display: flex; gap: 8px; }
+  .pill { flex:1; background: #f9fafb; border-radius: 8px; padding: 8px 10px; }
+  .pill-label { font-size: 0.68rem; color: #9ca3af; margin-bottom: 2px; }
+  .pill-val { font-size: 0.95rem; font-weight: 700; }
+  .green { color: #16a34a; }
+  .red { color: #dc2626; }
+  .muted { color: #9ca3af; }
+  .orig-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #9ca3af; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #eee; }
+  .orig-row .orig-val { font-weight: 700; }
+  .progress-wrap { margin-top: 10px; }
+  .prog-labels { display: flex; justify-content: space-between; font-size: 0.68rem; color: #9ca3af; margin-bottom: 3px; }
+  .prog-bg { height: 5px; background: #f3f4f6; border-radius: 4px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+  .p1 .prog-fill { background: #2563eb; }
+  .p2 .prog-fill { background: #7c3aed; }
+  .p3 .prog-fill { background: #0d9488; }
+
+  .review-box { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); margin-bottom: 16px; border-left: 4px solid #f59e0b; }
+  .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px; }
+  .review-title { font-size: 0.78rem; font-weight: 700; color: #92400e; text-transform: uppercase; letter-spacing: 0.05em; }
+  .review-date { font-size: 0.72rem; color: #9ca3af; }
+  .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin-bottom: 10px; }
+  .rec { background: #f8fafc; border-radius: 8px; padding: 10px 12px; font-size: 0.76rem; line-height: 1.55; }
+  .rec b { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: .04em; color: #64748b; margin-bottom: 3px; }
+  .rec-act { font-weight: 700; color: #0f766e; }
+  .review-market { padding: 8px 10px; background: #f8fafc; border-radius: 8px; font-size: 0.75rem; color: #475569; line-height: 1.6; }
+  .review-market strong { color: #334155; }
+
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .portfolio-box { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.07); margin-bottom: 12px; }
+  .box-header { padding: 11px 14px; font-size: 0.78rem; font-weight: 700; color: white; display: flex; justify-content: space-between; align-items: center; }
+  .p1 .box-header { background: #2563eb; }
+  .p2 .box-header { background: #7c3aed; }
+  .p3 .box-header { background: #0d9488; }
+  .target-tag { background: rgba(255,255,255,0.25); border-radius: 20px; padding: 2px 9px; font-size: 0.7rem; }
+  .tbl-wrap { overflow-x: auto; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { padding: 7px 12px; font-size: 0.67rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.04em; background: #fafafa; border-bottom: 1px solid #f3f4f6; text-align: right; white-space: nowrap; }
+  th:first-child { text-align: left; }
+  td { padding: 9px 12px; font-size: 0.8rem; border-bottom: 1px solid #f9fafb; text-align: right; vertical-align: middle; }
+  td:first-child { text-align: left; }
+  tr:last-child td { border-bottom: none; }
+  .ticker { font-weight: 700; font-size: 0.85rem; }
+  .co-name { font-size: 0.68rem; color: #9ca3af; }
+  .badge { display: inline-block; padding: 2px 7px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
+  .badge.green { background: #dcfce7; color: #16a34a; }
+  .badge.red { background: #fee2e2; color: #dc2626; }
+  .badge.muted { background: #f3f4f6; color: #9ca3af; }
+
+  .act-type { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
+  .act-type.buy { background: #dbeafe; color: #1d4ed8; }
+  .act-type.sell { background: #fce7f3; color: #be185d; }
+  .act-date { font-size: 0.75rem; color: #6b7280; }
+  .act-ticker { font-weight: 700; font-size: 0.82rem; }
+  .act-note { font-size: 0.68rem; color: #9ca3af; }
+  .act-total.green { color: #16a34a; font-weight: 600; }
+  .act-total.red { color: #dc2626; font-weight: 600; }
+
+  @media (max-width: 640px) { .summaries, .cols, .review-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>📊 Portfolio Tracker</h1>
+    <div class="subtitle">Wealthsimple · $1,000 + $1,000 + $2,000 · funded Sep 11, 2026</div>
+  </div>
+  <button class="refresh-btn" id="refreshBtn" onclick="loadPrices()">
+    <span id="icon">↻</span> Refresh
+  </button>
+</header>
+
+<div class="status-bar">
+  <span class="dot live" id="statusDot"></span>
+  <span id="statusText">Prices as of Oct 6, 2026 (~11:39am ET, intraday)</span>
+</div>
+
+<div class="summaries">
+  <div class="summary-card p1">
+    <div class="card-label">Portfolio 1 — Conservative</div>
+    <div class="card-value" id="val1">—</div>
+    <div class="card-basis">Cost: $1,000.00 · Target +20%/yr</div>
+    <div class="pills">
+      <div class="pill"><div class="pill-label">P&amp;L $</div><div class="pill-val muted" id="pnl1d">—</div></div>
+      <div class="pill"><div class="pill-label">P&amp;L %</div><div class="pill-val muted" id="pnl1p">—</div></div>
+      <div class="pill"><div class="pill-label">vs Target</div><div class="pill-val muted" id="vs1">— / 20%</div></div>
+    </div>
+    <div class="orig-row"><span>Since $1,000 deposit (Sep 11)</span><span class="orig-val muted" id="orig1">—</span></div>
+    <div class="progress-wrap p1">
+      <div class="prog-labels"><span>Progress to 20%</span><span id="plab1">0%</span></div>
+      <div class="prog-bg"><div class="prog-fill" id="bar1" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="summary-card p2">
+    <div class="card-label">Portfolio 2 — High Growth</div>
+    <div class="card-value" id="val2">—</div>
+    <div class="card-basis">Cost: $1,000.00 · Target +50%/yr</div>
+    <div class="pills">
+      <div class="pill"><div class="pill-label">P&amp;L $</div><div class="pill-val muted" id="pnl2d">—</div></div>
+      <div class="pill"><div class="pill-label">P&amp;L %</div><div class="pill-val muted" id="pnl2p">—</div></div>
+      <div class="pill"><div class="pill-label">vs Target</div><div class="pill-val muted" id="vs2">— / 50%</div></div>
+    </div>
+    <div class="orig-row"><span>Since $1,000 deposit (Sep 11)</span><span class="orig-val muted" id="orig2">—</span></div>
+    <div class="progress-wrap p2">
+      <div class="prog-labels"><span>Progress to 50%</span><span id="plab2">0%</span></div>
+      <div class="prog-bg"><div class="prog-fill" id="bar2" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="summary-card p3">
+    <div class="card-label">Portfolio 3 — Growth Core</div>
+    <div class="card-value" id="val3">—</div>
+    <div class="card-basis">Cost: $2,092.82 · Target +30%/yr</div>
+    <div class="pills">
+      <div class="pill"><div class="pill-label">P&amp;L $</div><div class="pill-val muted" id="pnl3d">—</div></div>
+      <div class="pill"><div class="pill-label">P&amp;L %</div><div class="pill-val muted" id="pnl3p">—</div></div>
+      <div class="pill"><div class="pill-label">vs Target</div><div class="pill-val muted" id="vs3">— / 30%</div></div>
+    </div>
+    <div class="orig-row"><span>Since $2,000 deposit (Sep 11)</span><span class="orig-val muted" id="orig3">—</span></div>
+    <div class="progress-wrap p3">
+      <div class="prog-labels"><span>Progress to 30%</span><span id="plab3">0%</span></div>
+      <div class="prog-bg"><div class="prog-fill" id="bar3" style="width:0%"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="review-box">
+  <div class="review-header">
+    <span class="review-title">📊 Daily Review</span>
+    <span class="review-date">Oct 6, 2026 · ~11:39am ET</span>
+  </div>
+  <div class="review-grid">
+    <div class="rec"><b>P1 · Conservative</b><span class="rec-act">HOLD</span> — $1,012.68 · +1.27% vs cost and vs deposit. Best GOOGL +4.86%, worst JPM &minus;6.14%. No stop-loss, no conversion (needs +18%).</div>
+    <div class="rec"><b>P2 · High Growth</b><span class="rec-act">HOLD</span> — $964.92 · &minus;3.51% vs cost and vs deposit. Best VRT +2.74%, worst APP &minus;10.94%. No stop-loss, no conversion (needs +45%).</div>
+    <div class="rec"><b>P3 · Growth Core</b><span class="rec-act">REBALANCED</span> — $2,209.99 · +5.60% vs cost / +10.50% vs deposit (cost now includes the $89.76 realized CRWD gain). Sold 80% of CRWD at $279.17; proceeds split 50/50 into MSFT (new) and NFLX (averaged down to $73.04). Best CRWD +33.66% (remaining 20%), worst NFLX &minus;6.83%. Watch NFLX earnings Oct 20; NFLX is now the largest P3 position (~$477).</div>
+  </div>
+  <div class="review-market">
+    <strong>Market context:</strong> Tech-led gains Tuesday morning after the Nasdaq's record close, with Treasury yields and oil easing. AI infrastructure rallied (AVGO +4.3%, ANET +3.1%, CRWD +3.1%; Marvell +7% on raised long-term targets at its investor day), and OKLO jumped +8.3% as nuclear names rallied on Constellation's 20-year, 890 MW nuclear power deal with Google.
+    <br><br><em>Since Oct 5, P1 rose from +0.71% to +1.27%, P2 improved from &minus;4.50% to &minus;3.51% (OKLO rebound offset a softer APP), and P3 climbed from +8.44% to +10.53%. No stop-loss triggers or conversions. Later Oct 6: user-directed P3 rebalance — trimmed 80% of CRWD, bought MSFT and added to NFLX.</em>
+  </div>
+</div>
+
+<div class="cols">
+  <!-- Portfolio 1 -->
+  <div>
+    <div class="portfolio-box p1">
+      <div class="box-header"><span>Conservative · Holdings</span><span class="target-tag">🎯 +20%</span></div>
+      <div class="tbl-wrap"><table id="t1"></table></div>
+    </div>
+    <div class="portfolio-box p1">
+      <div class="box-header"><span>Conservative · Activity</span></div>
+      <div class="tbl-wrap"><table id="a1">
+        <thead><tr>
+          <th>Date</th><th>Type</th><th>Ticker</th><th>Shares</th><th>Price</th><th>Total</th><th>Gain/Loss</th><th>Note</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">GOOGL</span></td><td>0.50110</td><td>$332.60</td><td class="act-total red">−$166.67</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Alphabet — AI/cloud/search mega-cap.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">AAPL</span></td><td>0.51036</td><td>$326.57</td><td class="act-total red">−$166.67</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Apple — lowest-volatility mega-cap anchor.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">JPM</span></td><td>0.47140</td><td>$353.56</td><td class="act-total red">−$166.67</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. JPMorgan Chase — financials diversifier.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">LLY</span></td><td>0.14841</td><td>$1,123.00</td><td class="act-total red">−$166.67</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Eli Lilly — healthcare/pharma diversifier.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">COST</span></td><td>0.18470</td><td>$902.38</td><td class="act-total red">−$166.67</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Costco — consumer staples diversifier.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">XOM</span></td><td>1.00869</td><td>$165.23</td><td class="act-total red">−$166.67</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. ExxonMobil — energy diversifier.</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- Portfolio 2 -->
+  <div>
+    <div class="portfolio-box p2">
+      <div class="box-header"><span>High Growth · Holdings</span><span class="target-tag">🚀 +50%</span></div>
+      <div class="tbl-wrap"><table id="t2"></table></div>
+    </div>
+    <div class="portfolio-box p2">
+      <div class="box-header"><span>High Growth · Activity</span></div>
+      <div class="tbl-wrap"><table id="a2">
+        <thead><tr>
+          <th>Date</th><th>Type</th><th>Ticker</th><th>Shares</th><th>Price</th><th>Total</th><th>Gain/Loss</th><th>Note</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">APP</span></td><td>0.79494</td><td>$314.49</td><td class="act-total red">−$250.00</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. AppLovin — high-growth adtech/AI.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">RDDT</span></td><td>1.60937</td><td>$155.34</td><td class="act-total red">−$250.00</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Reddit — social media growth.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">VRT</span></td><td>1.00754</td><td>$248.13</td><td class="act-total red">−$250.00</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Vertiv — AI-datacenter power/cooling infrastructure.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">OKLO</span></td><td>6.26881</td><td>$39.88</td><td class="act-total red">−$250.00</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Oklo — speculative SMR nuclear, high-beta AI-power play.</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- Portfolio 3 -->
+  <div>
+    <div class="portfolio-box p3">
+      <div class="box-header"><span>Growth Core · Holdings</span><span class="target-tag">📈 +30%</span></div>
+      <div class="tbl-wrap"><table id="t3"></table></div>
+    </div>
+    <div class="portfolio-box p3">
+      <div class="box-header"><span>Growth Core · Activity</span></div>
+      <div class="tbl-wrap"><table id="a3">
+        <thead><tr>
+          <th>Date</th><th>Type</th><th>Ticker</th><th>Shares</th><th>Price</th><th>Total</th><th>Gain/Loss</th><th>Note</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">NVDA</span></td><td>1.52653</td><td>$218.36</td><td class="act-total red">−$333.33</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Nvidia — AI compute leader.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">AVGO</span></td><td>0.92380</td><td>$360.83</td><td class="act-total red">−$333.33</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Broadcom — custom AI silicon/networking.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">TSM</span></td><td>0.77876</td><td>$428.03</td><td class="act-total red">−$333.33</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Taiwan Semiconductor — dominant AI-chip foundry.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type sell">SELL</span></td><td><span class="act-ticker">TSM</span></td><td>0.77876</td><td>$431.97</td><td class="act-total green">+$336.40</td><td class="act-total green">+$3.06 (+0.92%)</td><td><span class="act-note">Closed to fund INTC switch (user-directed). Realized gain.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">INTC</span></td><td>3.26187</td><td>$103.13</td><td class="act-total red">−$336.40</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Funded by TSM sale. Intel — replaces foundry slot.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">NFLX</span></td><td>4.38539</td><td>$76.01</td><td class="act-total red">−$333.33</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Netflix — profitable streaming growth compounder.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">CRWD</span></td><td>1.59597</td><td>$208.86</td><td class="act-total red">−$333.33</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. CrowdStrike — cybersecurity leader, high recurring revenue.</span></td></tr>
+          <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">ANET</span></td><td>1.76376</td><td>$188.99</td><td class="act-total red">−$333.33</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Arista Networks — AI/cloud networking infrastructure.</span></td></tr>
+          <tr><td><span class="act-date">Oct 6, 2026</span></td><td><span class="act-type sell">SELL</span></td><td><span class="act-ticker">CRWD</span></td><td>1.27678</td><td>$279.17</td><td class="act-total green">+$356.43</td><td class="act-total green">+$89.76 (+33.66%)</td><td><span class="act-note">Took profit on 80% (user-directed). Valuation stretched (fwd P/E ~193x, P/S ~53x). Kept 0.31919 sh.</span></td></tr>
+          <tr><td><span class="act-date">Oct 6, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">MSFT</span></td><td>0.33501</td><td>$531.97</td><td class="act-total red">−$178.22</td><td><span class="act-note muted">—</span></td><td><span class="act-note">50% of CRWD proceeds (user-directed). Microsoft — cloud/AI software, fwd P/E ~27x.</span></td></tr>
+          <tr><td><span class="act-date">Oct 6, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">NFLX</span></td><td>2.61869</td><td>$68.06</td><td class="act-total red">−$178.22</td><td><span class="act-note muted">—</span></td><td><span class="act-note">50% of CRWD proceeds (user-directed). Averaged down; new avg cost $73.04 on 7.00408 sh. Q3 earnings Oct 20.</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const P = [
+  {
+    id:1, target:20, cost:1000.00, orig:1000.00,
+    h:[
+      {t:"GOOGL", n:"Alphabet",         s:0.50110,  b:332.60},
+      {t:"AAPL",  n:"Apple",            s:0.51036,  b:326.57},
+      {t:"JPM",   n:"JPMorgan Chase",   s:0.47140,  b:353.56},
+      {t:"LLY",   n:"Eli Lilly",        s:0.14841,  b:1123.00},
+      {t:"COST",  n:"Costco",           s:0.18470,  b:902.38},
+      {t:"XOM",   n:"ExxonMobil",       s:1.00869,  b:165.23},
+    ]
+  },
+  {
+    id:2, target:50, cost:1000.00, orig:1000.00,
+    h:[
+      {t:"APP",  n:"AppLovin",       s:0.79494,  b:314.49},
+      {t:"RDDT", n:"Reddit",         s:1.60937,  b:155.34},
+      {t:"VRT",  n:"Vertiv",         s:1.00754,  b:248.13},
+      {t:"OKLO", n:"Oklo",           s:6.26881,  b:39.88},
+    ]
+  },
+  {
+    id:3, target:30, cost:2092.82, orig:2000.00,
+    h:[
+      {t:"NVDA", n:"Nvidia",                s:1.52653,  b:218.36},
+      {t:"AVGO", n:"Broadcom",              s:0.92380,  b:360.83},
+      {t:"INTC", n:"Intel",                 s:3.26187,  b:103.13},
+      {t:"NFLX", n:"Netflix",               s:7.00408,  b:73.04},
+      {t:"CRWD", n:"CrowdStrike",           s:0.31919,  b:208.86},
+      {t:"ANET", n:"Arista Networks",       s:1.76376,  b:188.99},
+      {t:"MSFT", n:"Microsoft",             s:0.33501,  b:531.97},
+    ]
+  }
+];
+
+// Last review snapshot — Oct 6, 2026 (~11:39am ET intraday)
+let live = {
+  GOOGL: 348.76,  AAPL: 333.71,  JPM: 331.85,  LLY: 1165.94,
+  COST: 930.20,   XOM: 164.90,   APP: 280.08,  RDDT: 149.85,
+  VRT: 254.92,    OKLO: 38.97,   NVDA: 241.54, AVGO: 377.98,
+  INTC: 114.04,   NFLX: 68.06,   CRWD: 279.17, ANET: 213.25,
+  MSFT: 531.97
+};
+
+function f2(n){ return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function f4(n){ return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:4}); }
+function cls(n){ return n>0?'green':n<0?'red':'muted'; }
+
+function renderTables() {
+  for (const p of P) {
+    const tbl = document.getElementById('t'+p.id);
+    let html = `<thead><tr>
+      <th>Stock</th><th>Buy</th><th>Now</th><th>Shares</th><th>Value</th><th>Gain/Loss</th><th>P&amp;L</th>
+    </tr></thead><tbody>`;
+
+    let totalVal=0, hasLive=true;
+
+    for (const h of p.h) {
+      const cost = h.s * h.b;
+      const cur  = live[h.t] ?? null;
+      const val  = cur != null ? h.s * cur : null;
+      const pnl  = val != null ? val - cost : null;
+      const pct  = pnl != null ? (pnl/cost)*100 : null;
+      if (val != null) totalVal += val; else hasLive = false;
+
+      const nowStr = cur  != null ? '$'+f2(cur)  : '<span class="muted">—</span>';
+      const valStr = val  != null ? '$'+f2(val)  : '<span class="muted">—</span>';
+      const pnlStr = pnl  != null ? (pnl>=0?'+':'-')+'$'+f2(Math.abs(pnl)) : '—';
+      const pctStr = pct  != null ? (pct>=0?'+':'')+f2(pct)+'%' : '—';
+      const bc     = pct  != null ? cls(pct) : 'muted';
+
+      html += `<tr>
+        <td><div class="ticker">${h.t}</div><div class="co-name">${h.n}</div></td>
+        <td>$${f2(h.b)}</td><td>${nowStr}</td><td>${f4(h.s)}</td>
+        <td>${valStr}</td>
+        <td class="${bc}" style="font-weight:600;">${pnlStr}</td>
+        <td><span class="badge ${bc}">${pctStr}</span></td>
+      </tr>`;
+    }
+    html += '</tbody>';
+    tbl.innerHTML = html;
+
+    if (hasLive) {
+      const pnl  = totalVal - p.cost;
+      const pct  = (pnl / p.cost) * 100;
+      const c    = cls(pnl);
+      const prog = Math.min(Math.max((pct/p.target)*100, 0), 100);
+
+      document.getElementById('val'+p.id).textContent = '$'+f2(totalVal);
+      const pd = document.getElementById('pnl'+p.id+'d');
+      pd.textContent = (pnl>=0?'+':'-')+'$'+f2(Math.abs(pnl));
+      pd.className = 'pill-val '+c;
+      const pp = document.getElementById('pnl'+p.id+'p');
+      pp.textContent = (pct>=0?'+':'')+f2(pct)+'%';
+      pp.className = 'pill-val '+c;
+      const vs = document.getElementById('vs'+p.id);
+      vs.textContent = (pct>=0?'+':'')+f2(pct)+'% / '+p.target+'%';
+      vs.className = 'pill-val '+c;
+      document.getElementById('bar'+p.id).style.width = prog+'%';
+      document.getElementById('plab'+p.id).textContent = f2(prog)+'% of target';
+
+      if (p.orig != null) {
+        const opnl = totalVal - p.orig;
+        const opct = (opnl / p.orig) * 100;
+        const oc = cls(opnl);
+        const oe = document.getElementById('orig'+p.id);
+        if (oe) {
+          oe.textContent = (opnl>=0?'+':'-')+'$'+f2(Math.abs(opnl))+' ('+(opct>=0?'+':'')+f2(opct)+'%)';
+          oe.className = 'orig-val '+oc;
+        }
+      }
+    }
+  }
+}
+
+renderTables();
+
+async function loadPrices() {
+  const btn = document.getElementById('refreshBtn');
+  const icon = document.getElementById('icon');
+  btn.disabled = true; icon.className = 'spin';
+
+  const tickers = P.flatMap(p => p.h.map(h => h.t));
+  const cmd = `python3 -c "
+import urllib.request, json
+tickers = '${tickers.join(',')}' .split(',')
+out = {}
+for t in tickers:
+    try:
+        req = urllib.request.Request(
+            f'https://query1.finance.yahoo.com/v8/finance/chart/{t}?interval=1d&range=1d',
+            headers={'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'}
+        )
+        with urllib.request.urlopen(req, timeout=8) as r:
+            d = json.load(r)
+            out[t] = round(d['chart']['result'][0]['meta']['regularMarketPrice'], 4)
+    except:
+        out[t] = None
+print(json.dumps(out))
+"`;
+
+  try {
+    if (!(window.cowork && window.cowork.callMcpTool)) throw new Error('no bridge');
+    const res = await window.cowork.callMcpTool('mcp__workspace__bash', { command: cmd });
+    const text = (res.content[0].text || '').trim();
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) {
+      const fetched = JSON.parse(match[0]);
+      for (const [k,v] of Object.entries(fetched)) { if (v!=null) live[k]=v; }
+      renderTables();
+      const now = new Date();
+      document.getElementById('statusDot').className = 'dot live';
+      document.getElementById('statusText').textContent =
+        'Live · updated ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    } else throw new Error('parse error');
+  } catch(e) {
+    document.getElementById('statusDot').className = 'dot live';
+    document.getElementById('statusText').textContent = 'Showing last review snapshot — Oct 6, 2026';
+  } finally {
+    btn.disabled=false; icon.className=''; icon.textContent='↻';
+  }
+}
+</script>
+
+</body>
+</html>
