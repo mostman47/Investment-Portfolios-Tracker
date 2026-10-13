@@ -1,8 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Portfolio Tracker</title>
 <style>
   :root { color-scheme: light; }
@@ -88,8 +84,6 @@
 
   @media (max-width: 640px) { .summaries, .cols, .review-grid { grid-template-columns: 1fr; } }
 </style>
-</head>
-<body>
 
 <header>
   <div>
@@ -103,7 +97,7 @@
 
 <div class="status-bar">
   <span class="dot live" id="statusDot"></span>
-  <span id="statusText">Prices as of Oct 6, 2026 (~11:39am ET, intraday)</span>
+  <span id="statusText">Prices as of Oct 12, 2026 (~11:39am ET, intraday)</span>
 </div>
 
 <div class="summaries">
@@ -157,16 +151,16 @@
 <div class="review-box">
   <div class="review-header">
     <span class="review-title">📊 Daily Review</span>
-    <span class="review-date">Oct 6, 2026 · ~11:39am ET</span>
+    <span class="review-date">Oct 12, 2026 · ~11:39am ET</span>
   </div>
   <div class="review-grid">
-    <div class="rec"><b>P1 · Conservative</b><span class="rec-act">HOLD</span> — $1,012.68 · +1.27% vs cost and vs deposit. Best GOOGL +4.86%, worst JPM &minus;6.14%. No stop-loss, no conversion (needs +18%).</div>
-    <div class="rec"><b>P2 · High Growth</b><span class="rec-act">HOLD</span> — $964.92 · &minus;3.51% vs cost and vs deposit. Best VRT +2.74%, worst APP &minus;10.94%. No stop-loss, no conversion (needs +45%).</div>
-    <div class="rec"><b>P3 · Growth Core</b><span class="rec-act">REBALANCED</span> — $2,209.99 · +5.60% vs cost / +10.50% vs deposit (cost now includes the $89.76 realized CRWD gain). Sold 80% of CRWD at $279.17; proceeds split 50/50 into MSFT (new) and NFLX (averaged down to $73.04). Best CRWD +33.66% (remaining 20%), worst NFLX &minus;6.83%. Watch NFLX earnings Oct 20; NFLX is now the largest P3 position (~$477).</div>
+    <div class="rec"><b>P1 · Conservative</b><span class="rec-act">HOLD</span> — $1,033.63 · +3.36% vs cost and vs deposit. Best GOOGL +6.51%, worst JPM &minus;5.27%. No stop-loss (JPM trigger ≈ $265.17), no conversion (needs +18%). Broad green day; XOM +1.8%.</div>
+    <div class="rec"><b>P2 · High Growth</b><span class="rec-act">HOLD</span> — $914.56 · &minus;8.54% vs cost and vs deposit. Best RDDT &minus;0.84%, worst OKLO &minus;18.00%. No stop-loss yet — OKLO $32.70 is ~9% above its $29.91 trigger (watch); APP trigger ≈ $235.87. OKLO &minus;5.8%, RDDT &minus;3.7% today.</div>
+    <div class="rec"><b>P3 · Growth Core</b><span class="rec-act">HOLD</span> — $2,142.49 · +2.37% vs cost / +7.12% vs deposit. Best CRWD +27.08% (remaining 20%), worst NFLX &minus;2.37%. No triggers (conversion needs +27%). CRWD &minus;3.5%, INTC &minus;3.3% today; MSFT +1.2%. NFLX earnings Oct 20.</div>
   </div>
   <div class="review-market">
-    <strong>Market context:</strong> Tech-led gains Tuesday morning after the Nasdaq's record close, with Treasury yields and oil easing. AI infrastructure rallied (AVGO +4.3%, ANET +3.1%, CRWD +3.1%; Marvell +7% on raised long-term targets at its investor day), and OKLO jumped +8.3% as nuclear names rallied on Constellation's 20-year, 890 MW nuclear power deal with Google.
-    <br><br><em>Since Oct 5, P1 rose from +0.71% to +1.27%, P2 improved from &minus;4.50% to &minus;3.51% (OKLO rebound offset a softer APP), and P3 climbed from +8.44% to +10.53%. No stop-loss triggers or conversions. Later Oct 6: user-directed P3 rebalance — trimmed 80% of CRWD, bought MSFT and added to NFLX.</em>
+    <strong>Market context:</strong> Mixed, rotational session (Columbus Day; bond market closed): SPY flat, QQQ &minus;0.6% vs Oct 9 close. Defensives/mega-cap (AAPL, COST, XOM, MSFT, GOOGL) up while semis, AI-infra and high-beta names (NVDA, AVGO, ANET, INTC, CRWD, OKLO, RDDT) sold off. No company-specific catalyst found for the four &gt;3% movers.
+    <br><br><em>Since Oct 9, P1 improved from +2.27% to +3.36%, P2 slipped from &minus;5.43% to &minus;8.54%, and P3 eased from +3.97% to +2.37% vs cost. No stop-loss triggers or conversions.</em>
   </div>
 </div>
 
@@ -283,13 +277,13 @@ const P = [
   }
 ];
 
-// Last review snapshot — Oct 6, 2026 (~11:39am ET intraday)
+// Last review snapshot — Oct 12, 2026 (~11:39am ET intraday)
 let live = {
-  GOOGL: 348.76,  AAPL: 333.71,  JPM: 331.85,  LLY: 1165.94,
-  COST: 930.20,   XOM: 164.90,   APP: 280.08,  RDDT: 149.85,
-  VRT: 254.92,    OKLO: 38.97,   NVDA: 241.54, AVGO: 377.98,
-  INTC: 114.04,   NFLX: 68.06,   CRWD: 279.17, ANET: 213.25,
-  MSFT: 531.97
+  GOOGL: 354.25,  AAPL: 339.31,  JPM: 334.91,  LLY: 1179.78,
+  COST: 955.675,  XOM: 171.97,   APP: 275.92,  RDDT: 154.03,
+  VRT: 240.53,    OKLO: 32.70,   NVDA: 225.843, AVGO: 356.237,
+  INTC: 101.24,   NFLX: 71.309,  CRWD: 265.425, ANET: 211.34,
+  MSFT: 541.71
 };
 
 function f2(n){ return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
@@ -405,12 +399,11 @@ print(json.dumps(out))
     } else throw new Error('parse error');
   } catch(e) {
     document.getElementById('statusDot').className = 'dot live';
-    document.getElementById('statusText').textContent = 'Showing last review snapshot — Oct 6, 2026';
+    document.getElementById('statusText').textContent = 'Showing last review snapshot — Oct 12, 2026';
   } finally {
     btn.disabled=false; icon.className=''; icon.textContent='↻';
   }
 }
 </script>
 
-</body>
-</html>
+</body></html>
