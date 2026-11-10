@@ -97,7 +97,7 @@
 
 <div class="status-bar">
   <span class="dot live" id="statusDot"></span>
-  <span id="statusText">Prices as of Oct 19, 2026 close</span>
+  <span id="statusText">Prices as of Nov 9, 2026 · close</span>
 </div>
 
 <div class="summaries">
@@ -119,7 +119,7 @@
   <div class="summary-card p2">
     <div class="card-label">Portfolio 2 — High Growth</div>
     <div class="card-value" id="val2">—</div>
-    <div class="card-basis">Cost: $920.76 · Target +50%/yr</div>
+    <div class="card-basis">Cost: $749.40 · Target +50%/yr</div>
     <div class="pills">
       <div class="pill"><div class="pill-label">P&amp;L $</div><div class="pill-val muted" id="pnl2d">—</div></div>
       <div class="pill"><div class="pill-label">P&amp;L %</div><div class="pill-val muted" id="pnl2p">—</div></div>
@@ -134,7 +134,7 @@
   <div class="summary-card p3">
     <div class="card-label">Portfolio 3 — Growth Core</div>
     <div class="card-value" id="val3">—</div>
-    <div class="card-basis">Cost: $2,092.82 · Target +30%/yr</div>
+    <div class="card-basis">Cost: $1,906.70 · Target +30%/yr</div>
     <div class="pills">
       <div class="pill"><div class="pill-label">P&amp;L $</div><div class="pill-val muted" id="pnl3d">—</div></div>
       <div class="pill"><div class="pill-label">P&amp;L %</div><div class="pill-val muted" id="pnl3p">—</div></div>
@@ -151,17 +151,18 @@
 <div class="review-box">
   <div class="review-header">
     <span class="review-title">📊 Daily Review</span>
-    <span class="review-date">Oct 19, 2026 · close</span>
+    <span class="review-date">Nov 9, 2026 · 10:38 ET intraday</span>
   </div>
   <div class="review-grid">
-    <div class="rec"><b>P1 · Conservative</b><span class="rec-act">HOLD</span> — $1,052.50 · +5.25% vs cost and vs deposit. Best LLY +10.45%, worst JPM &minus;5.67% (&minus;1.8% today). No stop-loss (JPM trigger ≈ $265.17), no conversion (needs +18%).</div>
-    <div class="rec"><b>P2 · High Growth</b><span class="rec-act" style="color:#dc2626">EXECUTED: SELL OKLO → BUY SHOP</span> — $842.01 · &minus;8.55% vs cost ($920.76) / &minus;15.80% vs deposit. Stop-loss sold 6.26881 OKLO @ $27.24 (realized &minus;$79.24); proceeds $170.76 bought 0.99825 SHOP @ $171.06. Best SHOP 0.00% (new), worst VRT &minus;16.95% (trigger ≈ $186.10); APP &minus;14.43%.</div>
-    <div class="rec"><b>P3 · Growth Core</b><span class="rec-act">HOLD</span> — $2,004.14 · &minus;4.24% vs cost / +0.21% vs deposit. Best CRWD +9.21%, worst INTC &minus;10.76% (+2.4% today). No triggers (conversion needs +27%; nearest stop INTC ≈ $77.35). NFLX reports Oct 20 after close, INTC Oct 29.</div>
+    <div class="rec"><b>P1 · Conservative</b><span class="rec-act">HOLD</span> — $1,053.44 · +5.34% vs cost and vs deposit. Best LLY +24.59% (+3.3% today), worst GOOGL &minus;11.72% (+3.1% today; stop $249.45, 17.7% away). No stop-loss, no conversion (needs +18%). No trade executed.</div>
+    <div class="rec"><b>P2 · High Growth</b><span class="rec-act">HOLD</span> — $778.83 · +3.93% vs cost ($749.40) / &minus;22.12% vs deposit. Best APP +28.58% (+3.4% today), worst SHOP &minus;12.29% (stop $128.30, 16.9% away). PLTR +4.6% rebound. No triggers, no thesis break. No trade executed.</div>
+    <div class="rec"><b>P3 · Growth Core</b><span class="rec-act">EXECUTED (user-directed)</span> — After close: SOLD 7.00408 NFLX @ $63.95 (+$447.91; realized &minus;$63.67 / &minus;12.45%) &rarr; BOUGHT 7.54440 INTC @ $59.37. New cost $1,906.70. At close: $1,824.17 · &minus;4.33% vs cost / &minus;8.79% vs deposit. New INTC stop $44.53. Earlier today: NVDA &minus;4.5% on the board probe into CEO Jensen Huang (governance risk, not a thesis break; held).</div>
   </div>
   <div class="review-market">
-    <strong>Market context:</strong> Tech rebounded after a three-session rotation: QQQ +1.2%, SPY +0.4% at the close, led by networking/semis (ANET +3.4%, INTC +2.4%, AVGO +1.8%) while defensives (JPM, LLY) slipped. No company-specific catalyst found — reads as a sector-wide bounce.
-    <br><br><em>Trades are now executed by the daily review (tracker ledger). Since Oct 16, P1 eased from +5.81% to +5.25% and P3 from &minus;4.19% to &minus;4.24% vs cost; P2 deposit-basis slipped from &minus;13.47% to &minus;15.80% after locking in the OKLO loss.</em>
+    <strong>Market context:</strong> Broad Monday rally: SPY +1.9%, QQQ +2.8%; tech ex-Nvidia leads as Broadcom/AMD/Arista climb and oil slides.
+    <br><br><em>No book within ~3% of a stop or conversion threshold. Closest stop: NVDA, 8.8% away. P1/P2 HOLD. P3: user-directed NFLX&rarr;INTC swap executed after the close (see activity).</em>
   </div>
+</div>
 </div>
 
 <div class="cols">
@@ -208,6 +209,10 @@
           <tr><td><span class="act-date">Sep 11, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">OKLO</span></td><td>6.26881</td><td>$39.88</td><td class="act-total red">−$250.00</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Rebuild funding. Oklo — speculative SMR nuclear, high-beta AI-power play.</span></td></tr>
           <tr><td><span class="act-date">Oct 19, 2026</span></td><td><span class="act-type sell">SELL</span></td><td><span class="act-ticker">OKLO</span></td><td>6.26881</td><td>$27.24</td><td class="act-total green">+$170.76</td><td class="act-total red">&minus;$79.24 (&minus;31.70%)</td><td><span class="act-note">Stop-loss (&gt;25% down; below $29.91 stop 4 reviews running). Executed by daily review.</span></td></tr>
           <tr><td><span class="act-date">Oct 19, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">SHOP</span></td><td>0.99825</td><td>$171.06</td><td class="act-total red">&minus;$170.76</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Funded by OKLO proceeds (one funded swap). Shopify — high-growth commerce/AI software, strongest 1-mo momentum in screen (+33%), ~5% off high.</span></td></tr>
+          <tr><td><span class="act-date">Oct 30, 2026</span></td><td><span class="act-type sell">SELL</span></td><td><span class="act-ticker">RDDT</span></td><td>1.60937</td><td>$92.91</td><td class="act-total green">+$149.53</td><td class="act-total red">&minus;$100.47 (&minus;40.19%)</td><td><span class="act-note">Stop-loss (&gt;25% down; &minus;28% today on Q3 report). Executed by daily review. APP also breached its stop but P2&#39;s 1-trade cap was used on the deeper loss.</span></td></tr>
+          <tr><td><span class="act-date">Oct 30, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">PLTR</span></td><td>0.80561</td><td>$185.61</td><td class="act-total red">&minus;$149.53</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Funded by RDDT proceeds (one funded swap). Palantir — strongest 3-mo momentum in high-growth screen (+48%), 11% off high; Q3 report early Nov.</span></td></tr>
+          <tr><td><span class="act-date">Nov 5, 2026</span></td><td><span class="act-type sell">SELL</span></td><td><span class="act-ticker">VRT</span></td><td>1.00754</td><td>$177.77</td><td class="act-total green">+$179.11</td><td class="act-total red">&minus;$70.89 (&minus;28.36%)</td><td><span class="act-note">Stop-loss (&gt;25% down; &minus;13.5% today below $186.10 stop amid AI-infrastructure selloff). Executed by daily review.</span></td></tr>
+          <tr><td><span class="act-date">Nov 5, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">SPOT</span></td><td>0.29013</td><td>$617.35</td><td class="act-total red">&minus;$179.11</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Funded by VRT proceeds (one funded swap). Spotify — best momentum in high-growth screen (+20% 1-mo / +26% 3-mo, 4.7% off high), held up in today&#39;s tech rout; post-Q3; diversifies away from AI-infra beta.</span></td></tr>
         </tbody>
       </table></div>
     </div>
@@ -237,6 +242,10 @@
           <tr><td><span class="act-date">Oct 6, 2026</span></td><td><span class="act-type sell">SELL</span></td><td><span class="act-ticker">CRWD</span></td><td>1.27678</td><td>$279.17</td><td class="act-total green">+$356.43</td><td class="act-total green">+$89.76 (+33.66%)</td><td><span class="act-note">Took profit on 80% (user-directed). Valuation stretched (fwd P/E ~193x, P/S ~53x). Kept 0.31919 sh.</span></td></tr>
           <tr><td><span class="act-date">Oct 6, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">MSFT</span></td><td>0.33501</td><td>$531.97</td><td class="act-total red">−$178.22</td><td><span class="act-note muted">—</span></td><td><span class="act-note">50% of CRWD proceeds (user-directed). Microsoft — cloud/AI software, fwd P/E ~27x.</span></td></tr>
           <tr><td><span class="act-date">Oct 6, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">NFLX</span></td><td>2.61869</td><td>$68.06</td><td class="act-total red">−$178.22</td><td><span class="act-note muted">—</span></td><td><span class="act-note">50% of CRWD proceeds (user-directed). Averaged down; new avg cost $73.04 on 7.00408 sh. Q3 earnings Oct 20.</span></td></tr>
+          <tr><td><span class="act-date">Oct 30, 2026</span></td><td><span class="act-type sell">SELL</span></td><td><span class="act-ticker">INTC</span></td><td>3.26187</td><td>$65.58</td><td class="act-total green">+$213.91</td><td class="act-total red">&minus;$122.49 (&minus;36.41%)</td><td><span class="act-note">Stop-loss (&gt;25% down; &minus;29% today after Q3 earnings/guidance). Executed by daily review.</span></td></tr>
+          <tr><td><span class="act-date">Oct 30, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">ISRG</span></td><td>0.48727</td><td>$439.00</td><td class="act-total red">&minus;$213.91</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Funded by INTC proceeds. Intuitive Surgical — robotic-surgery growth leader, +9% 1-mo / +17% 3-mo, 4% off high, post-Q3; diversifies away from the AI-semis rout.</span></td></tr>
+          <tr><td><span class="act-date">Nov 9, 2026</span></td><td><span class="act-type sell">SELL</span></td><td><span class="act-ticker">NFLX</span></td><td>7.00408</td><td>$63.95</td><td class="act-total green">+$447.91</td><td class="act-total red">&minus;$63.67 (&minus;12.45%)</td><td><span class="act-note">Sold entire position (user-directed). Fill at Nov 9 close.</span></td></tr>
+          <tr><td><span class="act-date">Nov 9, 2026</span></td><td><span class="act-type buy">BUY</span></td><td><span class="act-ticker">INTC</span></td><td>7.54440</td><td>$59.37</td><td class="act-total red">&minus;$447.91</td><td><span class="act-note muted">—</span></td><td><span class="act-note">Funded by NFLX proceeds (user-directed). Re-entry into Intel, stopped out Oct 30 at $65.58; user override of the 30-day no-rebuy rule.</span></td></tr>
         </tbody>
       </table></div>
     </div>
@@ -257,35 +266,35 @@ const P = [
     ]
   },
   {
-    id:2, target:50, cost:920.76, orig:1000.00,
+    id:2, target:50, cost:749.40, orig:1000.00,
     h:[
       {t:"APP",  n:"AppLovin",       s:0.79494,  b:314.49},
-      {t:"RDDT", n:"Reddit",         s:1.60937,  b:155.34},
-      {t:"VRT",  n:"Vertiv",         s:1.00754,  b:248.13},
       {t:"SHOP", n:"Shopify",        s:0.99825,  b:171.06},
+      {t:"PLTR", n:"Palantir",       s:0.80561,  b:185.61},
+      {t:"SPOT", n:"Spotify",        s:0.29013,  b:617.35},
     ]
   },
   {
-    id:3, target:30, cost:2092.82, orig:2000.00,
+    id:3, target:30, cost:1906.70, orig:2000.00,
     h:[
       {t:"NVDA", n:"Nvidia",                s:1.52653,  b:218.36},
       {t:"AVGO", n:"Broadcom",              s:0.92380,  b:360.83},
-      {t:"INTC", n:"Intel",                 s:3.26187,  b:103.13},
-      {t:"NFLX", n:"Netflix",               s:7.00408,  b:73.04},
+      {t:"INTC", n:"Intel",                 s:7.54440,  b:59.37},
       {t:"CRWD", n:"CrowdStrike",           s:0.31919,  b:208.86},
       {t:"ANET", n:"Arista Networks",       s:1.76376,  b:188.99},
       {t:"MSFT", n:"Microsoft",             s:0.33501,  b:531.97},
+      {t:"ISRG", n:"Intuitive Surgical",    s:0.48727,  b:439.00},
     ]
   }
 ];
 
-// Last review snapshot — Oct 19, 2026 close
+// Last snapshot — Nov 9, 2026 close
 let live = {
-  GOOGL: 344.18,  AAPL: 342.94,  JPM: 333.53,  LLY: 1240.34,
-  COST: 995.53,   XOM: 178.28,   APP: 269.12,  RDDT: 155.14,
-  VRT: 206.08,    SHOP: 171.06,  NVDA: 217.09, AVGO: 334.59,
-  INTC: 92.03,    NFLX: 69.85,   CRWD: 228.10, ANET: 182.95,
-  MSFT: 533.52
+  GOOGL: 288.15,  AAPL: 350.69,  JPM: 342.08,  LLY: 1411.95,
+  COST: 1066.18,  XOM: 164.73,  APP: 410.00,  SPOT: 609.10,
+  SHOP: 152.06,  PLTR: 169.20,  NVDA: 178.67,  AVGO: 319.48,
+  INTC: 59.37,  CRWD: 228.58,  ANET: 186.17,  MSFT: 545.18,
+  ISRG: 460.56
 };
 
 function f2(n){ return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
@@ -401,7 +410,7 @@ print(json.dumps(out))
     } else throw new Error('parse error');
   } catch(e) {
     document.getElementById('statusDot').className = 'dot live';
-    document.getElementById('statusText').textContent = 'Showing last review snapshot — Oct 19, 2026';
+    document.getElementById('statusText').textContent = 'Showing last snapshot — Nov 9, 2026 close';
   } finally {
     btn.disabled=false; icon.className=''; icon.textContent='↻';
   }
